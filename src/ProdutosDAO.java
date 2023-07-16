@@ -55,8 +55,42 @@ public class ProdutosDAO {
         }
     }
     
+             public void venderProduto(int id){
+                String sql = "UPDATE produtos SET status=Vendido WHERE id=?";
+                try {                 
+                    PreparedStatement stmt = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+                    ProdutosDTO p = new ProdutosDTO();
+                    stmt.setString(1,p.getStatus());
+                    
+                    stmt.execute();
+                    
+                } catch (Exception e) {
+                    System.out.println("Erro ao editar empresa: " + e.getMessage());
+                }
+            }
     
-    
-        
+            public ArrayList<ProdutosDTO> listarProdutosVendidos(){
+         String sql = "SELECT * FROM produtos where status=Vendido";              
+           try {
+            PreparedStatement stmt = this.conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();            
+                    
+            ArrayList<ProdutosDTO> listProdutos = new ArrayList<>();
+                while (rs.next()) { 
+                    ProdutosDTO p = new ProdutosDTO();
+                        
+                    p.setId(rs.getInt("id"));
+                    p.setNome(rs.getString("nome"));
+                    p.setStatus(rs.getString("status"));
+                    p.setValor(rs.getInt("valor"));
+                        
+                    listProdutos.add(p);    
+                }
+             return listProdutos;
+                
+            } catch (Exception e) {
+                return null;
+        }
+    }
 }
 
