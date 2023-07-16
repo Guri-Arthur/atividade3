@@ -55,7 +55,19 @@ public class ProdutosDAO {
         }
     }
     
-    
+             public void venderProduto(int id){
+                String sql = "UPDATE produtos SET status=Vendido WHERE id=?";
+                try {                 
+                    PreparedStatement stmt = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+                    ProdutosDTO p = new ProdutosDTO();
+                    stmt.setString(1,p.getStatus());
+                    
+                    stmt.execute();
+                    
+                } catch (Exception e) {
+                    System.out.println("Erro ao editar empresa: " + e.getMessage());
+                }
+            }
     
         
 }
